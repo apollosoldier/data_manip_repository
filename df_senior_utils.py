@@ -1,6 +1,7 @@
 import os
 import gc
 import sys
+from time import time
 
 import random
 import numpy as np
@@ -28,12 +29,31 @@ from xgboost import XGBClassifier
 from sklearn.mixture import GaussianMixture, BayesianGaussianMixture
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.preprocessing import OneHotEncoder
 
 ## END Models ##
 from sklearn.decomposition import PCA
 from sklearn.pipeline import Pipeline
 
 
+
+
+def fit(model, X, y,i):
+  print("Model : ",str(model)+str(i))
+  start = time()
+  cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=8, random_state=0)
+  score = cross_val_score(model, X, y, scoring='accuracy', cv=cv, n_jobs=-1)
+  speed[str(model)] = np.round(time()-start, 2)
+  accuracy[str(model)] = np.mean(score).round(3)
+  print(
+      f"Mean accuracy: {accuracy[str(model)]}\nStd: {np.std(score):.3f}\nRun time: {speed[str(model)]}s"
+  )
+  print("\n\n\n\t")
+  try:
+    print("Predict proba", str(model.predict_proba(X_test))+str(i))
+  except:
+    print("Can't predict likelihood for this model")
+  return accuracy
 
 
 
