@@ -20,7 +20,7 @@ warnings.simplefilter("ignore")
 
 ## BEG Models ##
 
-import lightgbm as lgb
+import lightgbm as lgbm
 from catboost import CatBoostRegressor
 from catboost import CatBoostClassifier
 from sklearn.ensemble import RandomForestClassifier
