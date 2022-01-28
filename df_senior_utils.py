@@ -34,9 +34,7 @@ from sklearn.decomposition import PCA
 from sklearn.pipeline import Pipeline
 
 
-my_models = [GradientBoostingClassifier(),
-             lgbm(), CatBoostClassifier(), XGBClassifier(),
-             RandomForestClassifier(), GaussianMixture()]
+
 
 
 def check_na_ratio(df):
