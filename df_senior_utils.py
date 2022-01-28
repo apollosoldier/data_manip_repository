@@ -19,6 +19,9 @@ pd.set_option('display.width', 500)
 warnings.simplefilter("ignore")
 
 ## BEG Models ##
+pip install catboost
+pip install lightgbm
+
 import lightgbm as lgb
 from catboost import CatBoostRegressor
 from catboost import CatBoostClassifier
