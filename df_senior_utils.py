@@ -35,6 +35,7 @@ from sklearn.preprocessing import OrdinalEncoder
 from sklearn.decomposition import PCA
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score
 
 
 
