@@ -30,7 +30,7 @@ from sklearn.mixture import GaussianMixture, BayesianGaussianMixture
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.preprocessing import OneHotEncoder
-
+from sklearn.preprocessing import OrdinalEncoder
 ## END Models ##
 from sklearn.decomposition import PCA
 from sklearn.pipeline import Pipeline
