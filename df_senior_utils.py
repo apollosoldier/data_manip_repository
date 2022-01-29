@@ -18,7 +18,7 @@ pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 500)
 warnings.simplefilter("ignore")
-
+from scipy.stats import chi2_contingency
 ## BEG Models ##
 
 import lightgbm as lgbm
@@ -36,8 +36,13 @@ from sklearn.decomposition import PCA
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score
-
-
+from sklearn.model_selection import GridSearchCV
+from lightgbm import LGBMClassifier as lgbm
+from sklearn.neural_network import MLPClassifier
+from catboost import CatBoost
+from mlxtend.plotting import plot_decision_regions
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
 
 def fit(model, X, y,i):
   print("Model : ",str(model)+str(i))
