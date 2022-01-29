@@ -44,6 +44,34 @@ from mlxtend.plotting import plot_decision_regions
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
+
+#==============================================================================================
+def lgbm_features_importance(clf,features,n=15,size=(15,12)):
+    
+    fold_importance_df = pd.DataFrame()
+    fold_importance_df["Feature"] = features
+    fold_importance_df["importance"] = clf.feature_importance()
+    fold_importance_df=fold_importance_df.sort_values("importance",ascending=False).iloc[:n,:]
+    plt.figure(figsize=size)
+    sns.barplot(x="importance", y="Feature", data=fold_importance_df) 
+    plt.title('Features importance ')
+    plt.tight_layout()
+    plt.show()
+#==============================================================================================
+def fit_lgbm(config,dtrain,dval):
+    
+    trn_data=lgb.Dataset(dtrain[config.features], label=dtrain[config.target],categorical_feature=config.categoricals)
+    val_data=lgb.Dataset(dval[config.features], label=dval[config.target],categorical_feature=config.categoricals)
+    clf=lgb.train(config.param, trn_data, 5_000_000, valid_sets = [trn_data, val_data],
+                 verbose_eval=config.vb_eval, early_stopping_rounds = config.es)
+    
+    pred_train = clf.predict(dtrain[config.features],num_iteration=clf.best_iteration) 
+    pred_oof = clf.predict(dval[config.features],num_iteration=clf.best_iteration)
+
+    lgbm_features_importance(clf,config.features,n=30,size=(15,12))
+
+    return clf,pred_train,pred_oof
+
 def fit(model, X, y,i):
   print("Model : ",str(model)+str(i))
   start = time()
