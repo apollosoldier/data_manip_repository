@@ -61,7 +61,17 @@ def fit(model, X, y,i):
     print("Can't predict likelihood for this model")
   return accuracy
 
-
+def catboost_features_importance(clf,features,n=15,size=(15,12)):
+    
+    fold_importance_df = pd.DataFrame()
+    fold_importance_df["Feature"] = features
+    fold_importance_df["importance"] = clf.feature_importance()
+    fold_importance_df=fold_importance_df.sort_values("importance",ascending=False).iloc[:n,:]
+    plt.figure(figsize=size)
+    sns.barplot(x="importance", y="Feature", data=fold_importance_df) 
+    plt.title('Features importance ')
+    plt.tight_layout()
+    plt.show()
 
 def check_na_ratio(df):
   empty_features = []
