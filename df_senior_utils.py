@@ -21,11 +21,11 @@ warnings.simplefilter("ignore")
 from scipy.stats import chi2_contingency
 ## BEG Models ##
 
-import lightgbm as lgbm
-from catboost import CatBoostRegressor
-from catboost import CatBoostClassifier
+#import lightgbm as lgbm
+#from catboost import CatBoostRegressor
+#from catboost import CatBoostClassifier
 from sklearn.ensemble import RandomForestClassifier
-from xgboost import XGBClassifier
+#from xgboost import XGBClassifier
 from sklearn.mixture import GaussianMixture, BayesianGaussianMixture
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
@@ -37,10 +37,10 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score
 from sklearn.model_selection import GridSearchCV
-from lightgbm import LGBMClassifier as lgbm
+#from lightgbm import LGBMClassifier as lgbm
 from sklearn.neural_network import MLPClassifier
-from catboost import CatBoost
-from mlxtend.plotting import plot_decision_regions
+#from catboost import CatBoost
+#from mlxtend.plotting import plot_decision_regions
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
