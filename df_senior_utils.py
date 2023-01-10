@@ -102,20 +102,24 @@ def catboost_features_importance(clf,features,n=15,size=(15,12)):
     plt.show()
 
 def check_na_ratio(df):
-  empty_features = []
-  missing_ratio = {}
-  for _ in features:
-    if df[_].isna().sum() >0:
-      print("{0} has {1} NaN value(s) ON {2} = {3}% missing".format(_,df[_].isna().sum(), 
-                                                                df[_].value_counts().sum()+df[_].isna().sum(), 
-                                                                100*np.round(
-                                                                    df[_].isna().sum()/
-                                                                    (df[_].value_counts().sum()+df[_].isna().sum()
-                                                                    ), 3)))
-      missing_ratio[_] = 100*np.round(df[_].isna().sum()/ (df[_].value_counts().sum()+df[_].isna().sum()
-                                                                    ), 3)
-    if 100*np.round(df[_].isna().sum()/ (df[_].value_counts().sum()+df[_].isna().sum()
-                                                                    ), 3)==100:
-      empty_features.append(_)
-    else:
-      print("**Feature named** {0} has none missing value".format(_))
+    empty_features = []
+    missing_ratio = {}
+    features = df.columns.tolist()
+    for feature in features:
+        if df[feature].isna().sum() > 0:
+            ratio = 100 * np.round(
+                df[feature].isna().sum()
+                / (df[feature].value_counts().sum() + df[feature].isna().sum()),
+                3,
+            )
+            print(
+                f"{feature} has {df[feature].isna().sum()} NaN value(s) ON {df[feature].value_counts().sum()+df[feature].isna().sum()} = {ratio}% missing"
+            )
+            missing_ratio[feature] = ratio
+            if ratio == 100:
+                empty_features.append(feature)
+        else:
+            print(f"**Feature named** {feature} has none missing value")
+    return missing_ratio, empty_features
+
+
