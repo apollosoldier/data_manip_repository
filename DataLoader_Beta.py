@@ -1,24 +1,10 @@
-import concurrent.futures
-import gc
-import pickle
-
-import numpy as np
-import pandas as pd
-from PIL import Image, ImageOps
-from sklearn.model_selection import train_test_split
-from sklearn.utils.class_weight import compute_class_weight
-from tensorflow import keras
-from tensorflow.keras import optimizers
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tqdm import tqdm
-from tqdm.notebook import tqdm
-
-class DataLoaderBeta:
-    def __init__(self, image_data_path, train_data_txt, test_data_txt, img_size):
+class DataLoader:
+    def __init__(self, image_data_path, train_data_txt, test_data_txt, img_size, normalize):
         self.training_img_path = image_data_path
         self.data_csv = train_data_txt
         self.img_size = img_size
         self.test_data_txt = test_data_txt
+        self.normalize = normalize
 
     def load_image(self, filename):
         img = Image.open(filename)
@@ -26,8 +12,10 @@ class DataLoaderBeta:
         img = img.resize((height, width))
         img = ImageOps.equalize(img, mask=None)
         img_arr = np.asarray(img, dtype=np.float32)
-        img_arr = img_arr / 255
-
+        
+        if self.normalize:
+            img_arr = img_arr / 255
+            
         return img_arr
 
     def load_test_datas(self):
@@ -99,33 +87,33 @@ class DataLoaderBeta:
 if __name__ == "__main__":
     
     width, height = (60, 60)
-    train_data_txt_path = "/dbfs/FileStore/sandboxj/esiea_train_2022_DL.txt"
-    images_path = "/dbfs/FileStore/sandboxj/img_esiea/"
-    test_data_txt_path = "/dbfs/FileStore/sandboxj/esiea_valid_2022_DL.txt"
+    train_data_txt_path = "../Documents/img_esiea/train_2022_DL.txt"
+    images_path = "../Documents/img_esiea/"
+    test_data_txt_path = "../Documents/img_esiea/valid_2022_DL.txt"
     
-    data = DataLoaderBeta(
+    data = DataLoader(
         image_data_path=images_path,
         train_data_txt=train_data_txt_path,
         test_data_txt=test_data_txt_path,
         img_size=(width, height),
+        normalize = True,
     )
 
     X, y = data.load_train_datas()
     X_test = data.load_test_datas()
-    
-    np.save(f"/dbfs/FileStore/X_{str(width)}.npy", X)
-    np.save(f"/dbfs/FileStore/y_{str(width)}.npy", y)
-    np.save(f"/dbfs/FileStore/X_test_{str(width)}.npy", X_test)
+    np.save(f"../Documents/X_{str(width)}.npy", X)
+    np.save(f"../Documents/y_{str(width)}.npy", y)
+    np.save(f"../Documents/X_test_{str(width)}.npy", X_test)
     
     import sys
 
     for var_name in dir():
         if not var_name.startswith("_"):
             del globals()[var_name]
+    import gc
     gc.collect()
     
-    X, y = np.load(f"/dbfs/FileStore/X_{str(width)}.npy"), np.load(
-    f"/dbfs/FileStore/y_{str(width)}.npy"
+    X, y = np.load(f"../../Documents/X_{str(width)}.npy"), np.load(
+    f"../../Documents/y_{str(width)}.npy"
     )
-    X_test = np.load(f"/dbfs/FileStore/X_test_{str(width)}.npy")
-    
+    X_test = np.load(f"../../Documents/X_test_{str(width)}.npy")
